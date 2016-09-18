@@ -77,6 +77,7 @@ public:
     // int RdmaCmpSwap(int t_id,int m_id,char *local,uint64_t compare,uint64_t swap,int size,uint64_t remote_offset);
     // int RdmaRead(int t_id,int m_id,char *local,int size,uint64_t remote_offset);
     int RdmaWrite(char *local,int size,uint64_t remote_offset);
+    int RdmaWriteWithImmediate(char *local,int size,uint64_t remote_offset);
     int RdmaRead(char *local,int size,uint64_t remote_offset);
 
     // Get the register buffer

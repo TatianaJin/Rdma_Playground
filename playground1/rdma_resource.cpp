@@ -489,6 +489,10 @@ post_send (struct QP *res, int opcode,char* local_buf,size_t size,size_t remote_
   sr.num_sge = 1;
   sr.opcode = static_cast<ibv_wr_opcode>(opcode);
   sr.send_flags = IBV_SEND_SIGNALED;
+  // for IBV_WR_RDMA_WRITE_WITH_IMM
+  if (opcode == IBV_WR_RDMA_WRITE_WITH_IMM) {
+      sr.imm_data = 1;  // TODO: only for testing
+  }
   if (opcode != IBV_WR_SEND)
     {
       sr.wr.rdma.remote_addr = res->remote_props.addr+remote_offset;
@@ -594,6 +598,9 @@ int RdmaResourcePair::poll_completion() {
 }
 int RdmaResourcePair::RdmaWrite(char* local,int size,uint64_t off) {
     return rdmaOp(local,size,off,IBV_WR_RDMA_WRITE);
+}
+int RdmaResourcePair::RdmaWriteWithImmediate(char* local,int size,uint64_t off) {
+    return rdmaOp(local,size,off,IBV_WR_RDMA_WRITE_WITH_IMM);
 }
 int RdmaResourcePair::RdmaRead(char* local,int size,uint64_t off) {
     return rdmaOp(local,size,off,IBV_WR_RDMA_READ);

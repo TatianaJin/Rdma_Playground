@@ -51,4 +51,24 @@ int main(int argc, char** argv) {
             printf("Message received: %s\n" , msg);
         }
     }
+    {
+        if (role == "reader")
+            rdma.post_receive(rdma.get_buf(), 1);
+        rdma.barrier(remote_name);
+        if (role == "writer") {
+            char* msg = rdma.get_buf();
+            strcpy(msg, "hello world");
+            // the last parameter is the virtual address of remote machine
+            rdma.RdmaWriteWithImmediate(msg, strlen(msg), 0); 
+        }
+        else if (role == "reader") {
+            rdma.poll_completion();
+            char* res;
+            rdma.rdma_read(&res);
+            printf("Message received: %s\n" , res);
+        }
+        else {
+            assert(false);
+        }
+    }
 }
