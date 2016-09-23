@@ -1,4 +1,4 @@
-# include "rdma_resource.hpp"
+#include "rdma_resource.hpp"
 #include <iostream>
 
 int main(int argc, char** argv) {
@@ -51,6 +51,7 @@ int main(int argc, char** argv) {
             printf("Message received: %s\n" , msg);
         }
     }
+    // test rdma write with imm
     {
         if (role == "reader")
             rdma.post_receive(rdma.get_buf(), 1);
